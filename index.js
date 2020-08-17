@@ -66,7 +66,7 @@ client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar c
         var limitedTo = 10;
         if((arrayComando.length > 0) && (isNaN(parseInt(arrayComando)))){
             limitedTo = parseInt(arrayComando[1])+1;
-        }else{
+        }else if(arrayComando.length != 0){
             limitedTo = 0;
         }
         const fetched = await message.channel.messages.fetch({limit : limitedTo });
