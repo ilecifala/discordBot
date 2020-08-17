@@ -16,7 +16,7 @@ client.on('ready', () => {
     client.user.setStatus('invisible');
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
     //Recibiendo el mensaje
     console.log(msg.content);
 
@@ -50,7 +50,6 @@ client.on('message', msg => {
             msg.channel.send('sito');
     }
 
-
     //cumpleañito
     if(msg.content.startsWith('!cumple')){
         const cumpleEmbed = new MessageEmbed()
@@ -59,6 +58,15 @@ client.on('message', msg => {
     }
 
 });
+
+client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar cómo hacer para borrar n mensajes
+    if (message.content === '!clear') {
+        const fetched = await message.channel.messages.fetch({limit : 10});
+        message.channel.bulkDelete(fetched);
+        console.log('msgs deleted');
+    }
+});
+
 
 //Play "La Jeepeta" !play
 
