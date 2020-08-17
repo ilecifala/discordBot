@@ -63,7 +63,7 @@ client.on('message', async msg => {
 client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar cómo hacer para borrar n mensajes
     if (message.content.startsWith('!clear')) {
         var arrayComando = message.content.split(' ');
-        var limitedTo = 10;
+        var limitedTo = 11;
         if(arrayComando.length > 1){
             limitedTo = 0;
             limitedTo = parseInt(arrayComando[1])+1;
