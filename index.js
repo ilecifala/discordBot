@@ -1,6 +1,15 @@
 const {Client, MessageEmbed}= require('discord.js');
 const client = new Client();
 
+//const {token} = require('./config.json'); //una forma de importar el token desde un .json
+require('dotenv-flow').config(); //.env
+
+const config = {
+    token: process.env.TOKEN,
+    owner: process.env.OWNER,
+    prefix: process.env.PREFIX
+};
+
 
 client.on('ready', () => {
     console.log(`Bot ready as ${client.user.tag}`);
@@ -34,6 +43,9 @@ client.on('message', msg => {
         else if (message.includes('juan'))
             msg.channel.send('trolo');
 
+        else if (message.includes('seba'))
+            msg.channel.send('deja a tu novia');
+
         else if (message.endsWith('que') ||  message.endsWith('que?') || message.endsWith('q') || message.endsWith('khe'))
             msg.channel.send('sito');
     }
@@ -53,5 +65,5 @@ client.on('message', msg => {
 
 
 
-client.login('');
-
+//client.login(token); //importado desde .json
+client.login(config.token);
