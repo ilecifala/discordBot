@@ -22,8 +22,6 @@ client.on('message', msg => {
             case ('hola'):
                 msg.channel.send(`hola ${msg.author}, uwu`);
                 break;
-            case ('!cumpleañito')
-                const embed = new MessageEmbed();
         }       
 
         if (message.includes('bieja') || message.includes('vieja'))
@@ -38,6 +36,16 @@ client.on('message', msg => {
         else if (message.endsWith('que') ||  message.endsWith('que?') || message.endsWith('q') || message.endsWith('khe'))
             msg.channel.send('sito');
     }
+
+
+
+    //cumpleañito
+    if(msg.content.startsWith('!cumple')){
+        const cumpleEmbed = new MessageEmbed()
+            .addField('Enero', 'Ile, Seba');
+        msg.channel.send(cumpleEmbed);
+    }
+
 });
 
 //Play "La Jeepeta" !play
