@@ -20,7 +20,8 @@ client.on('message', msg => {
                 msg.reply('pong');
                 break;
             case ('hola'):
-                msg.channel.send(`hola ${msg.author}, uwu`);
+                if(msg.author.presence.status == 'online')
+                    msg.channel.send(`hola ${msg.author}, uwu`);
                 break;
         }       
 
@@ -36,7 +37,6 @@ client.on('message', msg => {
         else if (message.endsWith('que') ||  message.endsWith('que?') || message.endsWith('q') || message.endsWith('khe'))
             msg.channel.send('sito');
     }
-
 
 
     //cumpleañito
