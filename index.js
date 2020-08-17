@@ -64,10 +64,9 @@ client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar c
     if (message.content.startsWith('!clear')) {
         var arrayComando = message.content.split(' ');
         var limitedTo = 10;
-        if((arrayComando.length > 0) && (isNaN(parseInt(arrayComando)))){
-            limitedTo = parseInt(arrayComando[1])+1;
-        }else if(arrayComando.length != 0){
+        if(arrayComando.length > 1){
             limitedTo = 0;
+            limitedTo = parseInt(arrayComando[1])+1;
         }
         const fetched = await message.channel.messages.fetch({limit : limitedTo });
         message.channel.bulkDelete(fetched);
