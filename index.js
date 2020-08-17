@@ -1,4 +1,5 @@
 const {Client, MessageEmbed}= require('discord.js');
+const { parse } = require('dotenv-flow');
 const client = new Client();
 
 //const {token} = require('./config.json'); //una forma de importar el token desde un .json
@@ -60,8 +61,14 @@ client.on('message', async msg => {
 });
 
 client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar cómo hacer para borrar n mensajes
-    if (message.content === '!clear') {
-        const fetched = await message.channel.messages.fetch({limit : 10});
+    if (message.content.startsWith('!clear')) {
+        var arrayComando = message.content.split(' ');
+        var fetched;
+        var limitedTo = 10;
+        if((arrayComando.length > 0) && (parseInt(arrayComando) != NaN)){
+            limitedTo = parseInt(arrayComando[1])+1;
+        }
+        fetched = await message.channel.messages.fetch({limit : limitedTo });
         message.channel.bulkDelete(fetched);
         console.log('msgs deleted');
     }
