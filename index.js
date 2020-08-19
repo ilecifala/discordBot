@@ -55,13 +55,18 @@ client.on('message', async msg => {
 
 client.on('message', async (message) => {
     if (message.content.startsWith('!clear')) {
+        //divide el comando del numero de mensajes a borrar
         var arrayComando = message.content.split(' ');
+        //si no pone numero borra 10 mensajes automaticamente (a demas del mensaje del comando)
         var limitedTo = 11;
         if(arrayComando.length > 1){
+            //si llega por parametro una letra en vez de numero se queda en 0
             limitedTo = 0;
             limitedTo = parseInt(arrayComando[1])+1;
         }
+        //selecciona la cantidad de mensajes
         const fetched = await message.channel.messages.fetch({limit : limitedTo });
+        //borra todos los mensajes seleccionados
         message.channel.bulkDelete(fetched);
         console.log('msgs deleted'.green);
     }
@@ -71,11 +76,10 @@ client.on('message', async (message) => {
 client.on('message', async (message) => {
     if(message.content.startsWith(`${config.prefix}actualizar`)){
         cumples.actualizarDB(message);
-    }
-    if(message.content.startsWith('!add')){
+    }//de prueba 
+    else if(message.content.startsWith('!add')){
         cumples.addCumple(message.content.split('*')[1]);
-    }
-    if(message.content.startsWith('!formatCumples')){
+    }else if(message.content.startsWith('!formatCumples')){
         cumples.formatDB();
     }
 });

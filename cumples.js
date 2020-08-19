@@ -1,6 +1,7 @@
 const fs = require('fs');
 const colors = require('colors');
 
+//vector con nombre de los meses
 const meses = [
     "enero",
     "febrero",
@@ -15,6 +16,7 @@ const meses = [
     "noviembre",
     "diciembre"
 ];
+//objeto vacio de meses para contener los cumpleaños
 const virgen = {
     enero: [],
     febrero: [],
@@ -29,6 +31,8 @@ const virgen = {
     noviembre: [],
     diciembre: []
   };
+
+//objeto tipo texto con los meses vacios
 const dataVirgen =JSON.stringify(virgen,null,2);
 
 //trae datos en hexadecimal desde la carpeta
@@ -36,6 +40,7 @@ var dataCumples = fs.readFileSync('cumples.json',);
 //lo transforma en objeto real
 var cumples = JSON.parse(dataCumples);
 
+//deja el archivo JSON sin personas
 const formatDB = function (){
     //escribe en
     fs.writeFile('cumples.json',dataVirgen,function(err){
@@ -44,11 +49,15 @@ const formatDB = function (){
         }
         console.log('Se resetea la Base de datos de cumpleaños'.yellow);
     });
+    //resetea el objeto principal que representa el JSON
     cumples = JSON.parse(dataVirgen);
 }
 
+//lee el canal de texto y agrega todos los cumpleaños que se escribieron
 const  actualizarDB = async function (msg){
+    //selecciona los mensajes del canal
     const fetched = await msg.channel.messages.fetch({limit : 100 });
+    //mientras haya mensajes, agrega los cumpleaños al JSON
     fetched.forEach(message => {
         console.log(message.content);
         addCumple(message.content);
@@ -56,12 +65,13 @@ const  actualizarDB = async function (msg){
     console.log('Termino de actualizar'.green);
 }
 
+//agrega un cumpleaños al JSON
 const addCumple = function (st){
 
-    //agregado de la persona en el objeto
     st = st.toLowerCase();
     st = st.split(' ');
     
+    //selecciona solo los strings de 2 a 4 palabras que es el formato que abarca
     if((st.length < 5) && (st.length > 1)){
         var dia;
         var mes;
@@ -78,12 +88,12 @@ const addCumple = function (st){
             dia: dia
         };
 
-        //cumples[enero].push() por ejemplo
+        //agrega al final del mes a la persona que se agrega
         cumples[mes].push(persona);
 
-        //convierte el objeto para que sea entendible en json
+        //convierte el objeto para que sea entendible en JSON
         dataCumples = JSON.stringify(cumples,null,2);
-        //escribe la carpeta json con el objeto agregado
+        //escribe la carpeta JSON con la persona agregada
         fs.writeFile('cumples.json',dataCumples,function(err){
             if(err){
                 console.log('El error fue: ',err);
