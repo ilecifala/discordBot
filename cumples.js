@@ -1,5 +1,6 @@
 const fs = require('fs');
 const colors = require('colors');
+const discord = require('discord.js');
 
 //vector con nombre de los meses
 const meses = [
@@ -106,6 +107,32 @@ const addCumple = function (st){
     
 }
 
+const toString = function (msg){
+    //trae el objeto a imprimir
+    var cumples_actual = JSON.parse(fs.readFileSync('./cumples.json'));
+    //crea el objeto contenedor del mensaje a imprimir
+    let cumples_mensaje = new discord.MessageEmbed();
+    //recorre cada mes del objeto
+    for (let j = 0; j < 12; j++) {
+        let description = "";
+        console.log(`cantidad de personas en ${meses[j]}: ${cumples_actual[meses[j]].length}`.yellow);
+        //si hay personas en el objeto
+        if(cumples_actual[meses[j]].length > 0){
+            //agrega en la descripcion las personas que se van a imprimir
+            for (let i = 0; i < cumples_actual[meses[j]].length; i++) {
+                description += cumples_actual[meses[j]][i].dia + ' ' + cumples_actual[meses[j]][i].nombre + '\n';
+            }
+        }else{
+            description = "     -";
+        }
+        //agrega titulo del mes y descripcion del mes
+        cumples_mensaje.addField(meses[j],description,true);                       
+    }
+    //imprime
+    msg.channel.send(cumples_mensaje);
+};
+
 module.exports.actualizarDB = actualizarDB;
 module.exports.addCumple = addCumple;
 module.exports.formatDB = formatDB;
+module.exports.toString = toString;
