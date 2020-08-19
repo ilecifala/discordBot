@@ -8,3 +8,5 @@ package.json
 token.json
 
 .env
+
+index2.js

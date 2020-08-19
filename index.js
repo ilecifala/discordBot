@@ -1,6 +1,7 @@
 const {Client, MessageEmbed}= require('discord.js');
 const { parse } = require('dotenv-flow');
 const client = new Client();
+const cumples = require('./cumples.js');
 
 //const {token} = require('./config.json'); //una forma de importar el token desde un .json
 require('dotenv-flow').config(); //.env
@@ -49,18 +50,10 @@ client.on('message', async msg => {
 
         else if (message.endsWith('que') ||  message.endsWith('que?') || message.endsWith('q') || message.endsWith('khe'))
             msg.channel.send('sito');
-    }
-
-    //cumpleañito
-    if(msg.content.startsWith('!cumple')){
-        const cumpleEmbed = new MessageEmbed()
-            .addField('Enero', 'Ile, Seba');
-        msg.channel.send(cumpleEmbed);
-    }
-
+    } 
 });
 
-client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar cómo hacer para borrar n mensajes
+client.on('message', async (message) => {
     if (message.content.startsWith('!clear')) {
         var arrayComando = message.content.split(' ');
         var limitedTo = 11;
@@ -70,10 +63,22 @@ client.on('message', async (message) => { ///Borra de a 10 mensajes, averiguar c
         }
         const fetched = await message.channel.messages.fetch({limit : limitedTo });
         message.channel.bulkDelete(fetched);
-        console.log('msgs deleted');
+        console.log('msgs deleted'.green);
     }
 });
 
+
+client.on('message', async (message) => {
+    if(message.content.startsWith(`${config.prefix}actualizar`)){
+        cumples.actualizarDB(message);
+    }
+    if(message.content.startsWith('!add')){
+        cumples.addCumple(message.content.split('*')[1]);
+    }
+    if(message.content.startsWith('!formatCumples')){
+        cumples.formatDB();
+    }
+});
 
 //Play "La Jeepeta" !play
 
