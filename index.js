@@ -1,7 +1,10 @@
+const { default: Collection } = require('@discordjs/collection');
 const {Client, MessageEmbed}= require('discord.js');
 const { parse } = require('dotenv-flow');
+const { moveMessagePortToContext } = require('worker_threads');
 const client = new Client();
 const cumples = require('./cumples.js');
+const ytdl = require('ytdl-core'); //para resproducir musica en un futuro
 
 //const {token} = require('./config.json'); //una forma de importar el token desde un .json
 require('dotenv-flow').config(); //.env
@@ -14,13 +17,13 @@ const config = {
 
 
 client.on('ready', () => {
-    console.log(`Bot ready as ${client.user.tag}`);
-    client.user.setStatus('invisible');
+    console.log(`Bot ready as ${client.user.tag}`.green);
+    client.user.setStatus('online');
 });
 
 client.on('message', async msg => {
-    //Recibiendo el mensaje
-    console.log(msg.content);
+    //COMANDS FOR EVERYONE
+    console.log(msg.content.grey);
 
     if ((typeof msg.content) === "string")
     {
@@ -53,36 +56,60 @@ client.on('message', async msg => {
     } 
 });
 
+
+
 client.on('message', async (message) => {
-    if (message.content.startsWith('!clear')) {
-        //divide el comando del numero de mensajes a borrar
-        var arrayComando = message.content.split(' ');
-        //si no pone numero borra 10 mensajes automaticamente (a demas del mensaje del comando)
-        var limitedTo = 11;
-        if(arrayComando.length > 1){
-            //si llega por parametro una letra en vez de numero se queda en 0
-            limitedTo = 0;
-            limitedTo = parseInt(arrayComando[1])+1;
+    //MODERATORS ONLY
+    //ADMINS ONLY
+
+    if(message.member._roles.includes('753719262601936942')){
+        
+        //Read all the channel trying to add biths
+        if(message.content ==`!cumpleactualizar`){
+            cumples.actualizarDB(message);
         }
-        //selecciona la cantidad de mensajes
-        const fetched = await message.channel.messages.fetch({limit : limitedTo });
-        //borra todos los mensajes seleccionados
-        message.channel.bulkDelete(fetched);
-        console.log('msgs deleted'.green);
+
+
+         //add births sent by parameter to the db
+        if(message.content.startsWith('!cumpleadd')){
+            cumples.addCumple(message.content.slice(11));
+        }
+
+
+         //DELETE THE DATABASE                                                          WARNING
+        if(message.content == '!cumpleFormat'){
+            cumples.formatDB();
+        }
+
+
+         //Prints every birth
+        if(message.content.startsWith('!cumplesimprimir')){
+            cumples.toString(message);
+        }
+
+        //Delets messages                                                               WARNING
+        if (message.content.startsWith('!clear')) {
+            //divide el comando del numero de mensajes a borrar
+            var arrayComando = message.content.split(' ');
+            //si no pone numero borra 10 mensajes automaticamente (a demas del mensaje del comando)
+            var limitedTo = 11;
+            if(arrayComando.length > 1){
+                //si llega por parametro una letra en vez de numero se queda en 0
+                limitedTo = 0;
+                limitedTo = parseInt(arrayComando[1])+1;
+            }
+            //selecciona la cantidad de mensajes
+            const fetched = await message.channel.messages.fetch({limit : limitedTo });
+            //borra todos los mensajes seleccionados
+            message.channel.bulkDelete(fetched);
+            console.log('msgs deleted'.green);
+        }
     }
 });
 
 
-client.on('message', async (message) => {
-    if(message.content.startsWith(`${config.prefix}actualizar`)){
-        cumples.actualizarDB(message);
-    }//de prueba 
-    else if(message.content.startsWith('!add')){
-        cumples.addCumple(message.content.split('*')[1]);
-    }else if(message.content.startsWith('!formatCumples')){
-        cumples.formatDB();
-    }
-});
+
+
 
 //Play "La Jeepeta" !play
 

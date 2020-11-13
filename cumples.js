@@ -120,7 +120,7 @@ const toString = function (msg){
         if(cumples_actual[meses[j]].length > 0){
             //agrega en la descripcion las personas que se van a imprimir
             for (let i = 0; i < cumples_actual[meses[j]].length; i++) {
-                description += cumples_actual[meses[j]][i].dia + ' ' + cumples_actual[meses[j]][i].nombre + '\n';
+                description += '-' + cumples_actual[meses[j]][i].dia + ' ' + cumples_actual[meses[j]][i].nombre + '\n';
             }
         }else{
             description = "     -";
